@@ -87,7 +87,7 @@ namespace PotterShoppingCart.Tests
             int actual = cart.Checkout();
 
             //Assert
-            var expected = 320;
+            var expected = 375;
             Assert.AreEqual(expected, actual);
         }
     }
@@ -146,6 +146,8 @@ namespace PotterShoppingCart.Tests
                     return 270;
                 case 4:
                     return 320;
+                case 5:
+                    return 375;
             }
             return 0;
         }
