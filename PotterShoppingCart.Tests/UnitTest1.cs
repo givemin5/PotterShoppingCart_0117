@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace PotterShoppingCart.Tests
 {
@@ -14,7 +16,7 @@ namespace PotterShoppingCart.Tests
         {
             //Arrange
             var cart = new ShoppingCart();
-            var book = new Book { Title = "哈利波特第一集", Price = 100 , Quantity = 1 };
+            var book = new Book { Title = "哈利波特第一集", Quantity = 1 };
 
             //Act
             cart.Add(book);
@@ -29,8 +31,8 @@ namespace PotterShoppingCart.Tests
         public void Test_第一集買了一本_第二集也買了一本_價格應為190() {
             //Arrange
             var cart = new ShoppingCart();
-            var book1 = new Book { Title = "哈利波特第一集", Price = 100, Quantity = 1 };
-            var book2 = new Book { Title = "哈利波特第二集", Price = 100, Quantity = 1 };
+            var book1 = new Book { Title = "哈利波特第一集", Quantity = 1 };
+            var book2 = new Book { Title = "哈利波特第二集", Quantity = 1 };
             //Act
             cart.Add(book1);
             cart.Add(book2);
@@ -45,7 +47,6 @@ namespace PotterShoppingCart.Tests
     internal class Book
     {
         public string Title { get; set; }
-        public int Price { get; set; }
         public int Quantity { get; internal set; }
     }
 
@@ -66,11 +67,33 @@ namespace PotterShoppingCart.Tests
         internal int Checkout()
         {
             int amount = 0;
-            foreach(var book in books)
+            while (books.Any(x => x.Quantity > 0))
             {
-                amount += book.Price * book.Quantity;
+                int serv = 0;
+                foreach (var book in books)
+                {
+                    if (book.Quantity > 0)
+                    {
+                        serv = serv + 1;
+                        book.Quantity = book.Quantity - 1;
+                    }
+                }
+                amount += CalcByBookNum(serv);
             }
+
+            
             return amount;
+        }
+
+        private int CalcByBookNum(int serv)
+        {
+            switch (serv) {
+                case 1:
+                    return 100;
+                case 2:
+                    return 190;
+            }
+            return 0;
         }
     }
 }
