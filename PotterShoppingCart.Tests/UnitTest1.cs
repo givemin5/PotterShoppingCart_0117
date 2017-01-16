@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 
 namespace PotterShoppingCart.Tests
 {
@@ -27,7 +26,8 @@ namespace PotterShoppingCart.Tests
         }
 
         [TestMethod]
-        public void Test_第一集買了一本_第二集也買了一本_價格應為190() {
+        public void Test_第一集買了一本_第二集也買了一本_價格應為190()
+        {
             //Arrange
             var cart = new ShoppingCart();
             cart.Add(new Book { Title = "哈利波特第一集", Quantity = 1 });
@@ -39,6 +39,7 @@ namespace PotterShoppingCart.Tests
             var expected = 190;
             Assert.AreEqual(expected, actual);
         }
+
         [TestMethod]
         public void Test_一二三集各買了一本_價格應為_270()
         {
@@ -55,6 +56,7 @@ namespace PotterShoppingCart.Tests
             var expected = 270;
             Assert.AreEqual(expected, actual);
         }
+
         [TestMethod]
         public void Test_一二三四集各買了一本_價格應為_320()
         {
@@ -72,6 +74,7 @@ namespace PotterShoppingCart.Tests
             var expected = 320;
             Assert.AreEqual(expected, actual);
         }
+
         [TestMethod]
         public void Test_一二三四五集各買了一本_價格應為_375()
         {
@@ -107,6 +110,7 @@ namespace PotterShoppingCart.Tests
             var expected = 370;
             Assert.AreEqual(expected, actual);
         }
+
         [TestMethod]
         public void Test_第一集買了一本_第二三集各買了兩本_價格應為_460()
         {
@@ -123,11 +127,7 @@ namespace PotterShoppingCart.Tests
             var expected = 460;
             Assert.AreEqual(expected, actual);
         }
-
-        
     }
-
-    
 
     internal class Book
     {
@@ -149,38 +149,51 @@ namespace PotterShoppingCart.Tests
             books.Add(book);
         }
 
+        /// <summary>
+        /// 結帳
+        /// </summary>
+        /// <returns></returns>
         internal int Checkout()
         {
             int amount = 0;
             while (books.Any(x => x.Quantity > 0))
             {
-                int serv = 0;
+                int bookNum = 0;
                 foreach (var book in books)
                 {
                     if (book.Quantity > 0)
                     {
-                        serv = serv + 1;
+                        bookNum = bookNum + 1;
                         book.Quantity = book.Quantity - 1;
                     }
                 }
-                amount += CalcByBookNum(serv);
+                amount += CalcAmountByBookNum(bookNum);
             }
 
-            
             return amount;
         }
 
-        private int CalcByBookNum(int serv)
+        /// <summary>
+        /// 根據數量給予優惠金額
+        /// </summary>
+        /// <param name="bookNum"></param>
+        /// <returns></returns>
+        private int CalcAmountByBookNum(int bookNum)
         {
-            switch (serv) {
+            switch (bookNum)
+            {
                 case 1:
                     return 100;
+
                 case 2:
                     return 190;
+
                 case 3:
                     return 270;
+
                 case 4:
                     return 320;
+
                 case 5:
                     return 375;
             }
