@@ -1,8 +1,5 @@
-﻿using System;
-using System.Text;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace PotterShoppingCart.Tests
 {
@@ -15,18 +12,17 @@ namespace PotterShoppingCart.Tests
         [TestMethod]
         public void Test_第一集買了一本_其他都沒買_價格應為100()
         {
+            //Arrange
             var cart = new ShoppingCart();
+            var book = new Book { Title = "哈利波特第一集", Price = 100 , Quantity = 1 };
 
-            var book = new Book { Title = "哈利波特第一集", Price = 100 };
-
-            var expected = 100;
-
-            cart.Add(book, 1);
-
+            //Act
+            cart.Add(book);
             int actual = cart.Checkout();
 
+            //Assert
+            var expected = 100;
             Assert.AreEqual(expected, actual);
-
         }
     }
 
@@ -34,23 +30,31 @@ namespace PotterShoppingCart.Tests
     {
         public string Title { get; set; }
         public int Price { get; set; }
-
+        public int Quantity { get; internal set; }
     }
 
     internal class ShoppingCart
     {
+        private List<Book> books;
+
         public ShoppingCart()
         {
+            books = new List<Book>();
         }
 
-        internal void Add(Book book, int num)
+        internal void Add(Book book)
         {
-            throw new NotImplementedException();
+            books.Add(book);
         }
 
         internal int Checkout()
         {
-            throw new NotImplementedException();
+            int amount = 0;
+            foreach(var book in books)
+            {
+                amount += book.Price * book.Quantity;
+            }
+            return amount;
         }
     }
 }
