@@ -16,10 +16,9 @@ namespace PotterShoppingCart.Tests
         {
             //Arrange
             var cart = new ShoppingCart();
-            var book = new Book { Title = "哈利波特第一集", Quantity = 1 };
+            cart.Add(new Book { Title = "哈利波特第一集", Quantity = 1 });
 
             //Act
-            cart.Add(book);
             int actual = cart.Checkout();
 
             //Assert
@@ -31,15 +30,29 @@ namespace PotterShoppingCart.Tests
         public void Test_第一集買了一本_第二集也買了一本_價格應為190() {
             //Arrange
             var cart = new ShoppingCart();
-            var book1 = new Book { Title = "哈利波特第一集", Quantity = 1 };
-            var book2 = new Book { Title = "哈利波特第二集", Quantity = 1 };
+            cart.Add(new Book { Title = "哈利波特第一集", Quantity = 1 });
+            cart.Add(new Book { Title = "哈利波特第二集", Quantity = 1 });
             //Act
-            cart.Add(book1);
-            cart.Add(book2);
             int actual = cart.Checkout();
 
             //Assert
             var expected = 190;
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void Test_一二三集各買了一本_價格應為_270()
+        {
+            //Arrange
+            var cart = new ShoppingCart();
+            cart.Add(new Book { Title = "哈利波特第一集", Quantity = 1 });
+            cart.Add(new Book { Title = "哈利波特第二集", Quantity = 1 });
+            cart.Add(new Book { Title = "哈利波特第三集", Quantity = 1 });
+            //Act
+
+            int actual = cart.Checkout();
+
+            //Assert
+            var expected = 270;
             Assert.AreEqual(expected, actual);
         }
     }
