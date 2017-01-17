@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -155,7 +156,9 @@ namespace PotterShoppingCart.Tests
         /// <returns></returns>
         internal int Checkout()
         {
-            int amount = 0;
+            const int UNIT_PRICE = 100;
+            decimal amount = 0;
+
             while (books.Any(x => x.Quantity > 0))
             {
                 int bookNum = 0;
@@ -167,10 +170,10 @@ namespace PotterShoppingCart.Tests
                         book.Quantity = book.Quantity - 1;
                     }
                 }
-                amount += CalcAmountByBookNum(bookNum);
+                amount += UNIT_PRICE * bookNum * GetDiscount(bookNum);
             }
 
-            return amount;
+            return Convert.ToInt32(Math.Round(amount,MidpointRounding.AwayFromZero));
         }
 
         /// <summary>
@@ -178,24 +181,24 @@ namespace PotterShoppingCart.Tests
         /// </summary>
         /// <param name="bookNum"></param>
         /// <returns></returns>
-        private int CalcAmountByBookNum(int bookNum)
+        private decimal GetDiscount(int bookNum)
         {
             switch (bookNum)
             {
                 case 1:
-                    return 100;
+                    return 1m;
 
                 case 2:
-                    return 190;
+                    return 0.95m;
 
                 case 3:
-                    return 270;
+                    return 0.90m;
 
                 case 4:
-                    return 320;
+                    return 0.80m;
 
                 case 5:
-                    return 375;
+                    return 0.75m;
             }
             return 0;
         }
